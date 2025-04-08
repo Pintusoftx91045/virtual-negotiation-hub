@@ -34,10 +34,11 @@ export function DealList({ deals }: DealListProps) {
       </div>
 
       <Tabs defaultValue="all" onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-5 mb-4">
+        <TabsList className="grid grid-cols-6 mb-4">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="progress">In Progress</TabsTrigger>
+          <TabsTrigger value="on-hold">On Hold</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
           <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
         </TabsList>

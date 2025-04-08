@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import { ChatInterface } from "@/components/chat/chat-interface";
 import { DocumentUploader } from "@/components/documents/document-uploader";
 import { PriceNegotiation } from "@/components/deals/price-negotiation";
 import { useToast } from "@/components/ui/use-toast";
-import { FileText, MessageSquare, DollarSign, Calendar, User } from "lucide-react";
+import { FileText, MessageSquare, DollarSign, Calendar, User, Edit, Pause } from "lucide-react";
 
 // Mock data types
 type Message = {
@@ -48,7 +47,7 @@ const mockDeal = {
   description:
     "Development of a custom CRM system with customer management, invoicing, and reporting features. Including 3 months of support and bug fixes after delivery.",
   price: 15000,
-  status: "progress" as "pending" | "progress" | "completed" | "cancelled",
+  status: "progress" as "pending" | "progress" | "completed" | "cancelled" | "on-hold",
   createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
   seller: {
     id: "seller-1",
@@ -349,22 +348,46 @@ const DealDetailsPage = () => {
               </div>
             </div>
             <div className="flex flex-row md:flex-col gap-2 ml-auto">
+              <Button
+                variant="outline"
+                className="border-gray-300 text-gray-600 hover:bg-gray-50 flex items-center gap-2"
+                onClick={() => navigate(`/deals/${id}/edit`)}
+              >
+                <Edit className="h-4 w-4" /> Edit Deal
+              </Button>
+              
               {deal.status === "progress" && (
-                <Button
-                  variant="outline"
-                  className="border-green-500 text-green-600 hover:bg-green-50"
-                  onClick={() => {
-                    setDeal({ ...deal, status: "completed" });
-                    toast({
-                      title: "Deal Completed",
-                      description: "The deal has been marked as completed.",
-                    });
-                  }}
-                >
-                  Complete Deal
-                </Button>
+                <>
+                  <Button
+                    variant="outline"
+                    className="border-purple-500 text-purple-600 hover:bg-purple-50 flex items-center gap-2"
+                    onClick={() => {
+                      setDeal({ ...deal, status: "on-hold" });
+                      toast({
+                        title: "Deal On Hold",
+                        description: "The deal has been put on hold.",
+                      });
+                    }}
+                  >
+                    <Pause className="h-4 w-4" /> Put On Hold
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-green-500 text-green-600 hover:bg-green-50"
+                    onClick={() => {
+                      setDeal({ ...deal, status: "completed" });
+                      toast({
+                        title: "Deal Completed",
+                        description: "The deal has been marked as completed.",
+                      });
+                    }}
+                  >
+                    Complete Deal
+                  </Button>
+                </>
               )}
-              {(deal.status === "pending" || deal.status === "progress") && (
+              
+              {(deal.status === "pending" || deal.status === "progress" || deal.status === "on-hold") && (
                 <Button
                   variant="outline"
                   className="border-red-500 text-red-600 hover:bg-red-50"
